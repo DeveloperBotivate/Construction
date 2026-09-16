@@ -49,7 +49,7 @@ export default function VendorBillDetail() {
       <PageHeader
         title={bill.billNumber}
         subtitle={`${vendor?.name ?? ''} · Invoice ${bill.invoiceNumber}`}
-        breadcrumb={[{ label: 'Vendor Bills', to: '/vendor-bills' }, { label: bill.billNumber }]}
+        breadcrumb={[{ label: 'Bills & Payments', to: '/bills-payments' }, { label: bill.billNumber }]}
         actions={
           <>
             <StatusBadge status={bill.matchStatus} />

@@ -27,11 +27,11 @@ export function Topbar({ onOpenMobileNav }: { onOpenMobileNav: () => void }) {
       </button>
 
       {projects.length > 0 && (
-        <div className="hidden items-center gap-2 sm:flex">
+        <div className="flex min-w-0 items-center gap-1.5 sm:gap-2">
           <select
             value={selectedProjectId}
             onChange={e => setSelectedProject(e.target.value)}
-            className="rounded-md border border-ink-300 bg-ink-50 px-2.5 py-1.5 text-sm font-medium text-ink-700 focus:border-brand-500 focus:outline-none"
+            className="w-20 min-w-0 rounded-md border border-ink-300 bg-ink-50 px-1.5 py-1.5 text-xs font-medium text-ink-700 focus:border-brand-500 focus:outline-none sm:w-auto sm:px-2.5 sm:text-sm"
           >
             {projects.map(p => <option key={p.id} value={p.id}>{p.code}</option>)}
           </select>

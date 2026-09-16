@@ -42,7 +42,7 @@ export default function RABillDetail() {
       <PageHeader
         title={bill.raNumber}
         subtitle={project?.name ?? ''}
-        breadcrumb={[{ label: 'RA Bills', to: '/ra-bills' }, { label: bill.raNumber }]}
+        breadcrumb={[{ label: 'Bills & Payments', to: '/bills-payments' }, { label: bill.raNumber }]}
         actions={
           <>
             <StatusBadge status={bill.status} />

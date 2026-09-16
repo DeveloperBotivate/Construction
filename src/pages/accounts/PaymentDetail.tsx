@@ -32,7 +32,7 @@ export default function PaymentDetail() {
       <PageHeader
         title={payment.paymentNumber}
         subtitle={`${payment.payeeName} · ${fmtCurrency(payment.amount)}`}
-        breadcrumb={[{ label: 'Payments', to: '/payments' }, { label: payment.paymentNumber }]}
+        breadcrumb={[{ label: 'Bills & Payments', to: '/bills-payments' }, { label: payment.paymentNumber }]}
         actions={
           <>
             <StatusBadge status={payment.type} />

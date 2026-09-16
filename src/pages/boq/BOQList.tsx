@@ -56,7 +56,7 @@ export default function BOQListPage() {
           <Field label="Section"><input className="input" value={form.section} onChange={e => setForm({ ...form, section: e.target.value })} placeholder="Civil - Structure" /></Field>
           <Field label="Item Code"><input className="input" value={form.itemCode} onChange={e => setForm({ ...form, itemCode: e.target.value })} /></Field>
           <Field label="Description"><input className="input" value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} /></Field>
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
             <Field label="Unit"><input className="input" value={form.unit} onChange={e => setForm({ ...form, unit: e.target.value })} placeholder="m3" /></Field>
             <Field label="Qty"><input type="number" className="input" value={form.contractQty} onChange={e => setForm({ ...form, contractQty: Number(e.target.value) })} /></Field>
             <Field label="Rate (₹)"><input type="number" className="input" value={form.rate} onChange={e => setForm({ ...form, rate: Number(e.target.value) })} /></Field>

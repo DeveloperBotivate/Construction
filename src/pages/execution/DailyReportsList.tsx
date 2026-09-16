@@ -197,7 +197,7 @@ function CreateDPRDrawer({ open, onClose, boqItems, materials, onCreate }: {
           </select>
         </Field>
         <Field label="Activity"><input value={activity} onChange={e => setActivity(e.target.value)} className={inputCls} placeholder="e.g. Foundation Concrete Pour" /></Field>
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
           <Field label="Planned Qty"><input type="number" value={plannedQty} onChange={e => setPlannedQty(e.target.value)} className={inputCls} /></Field>
           <Field label="Today Qty"><input type="number" value={todayQty} onChange={e => setTodayQty(e.target.value)} className={inputCls} /></Field>
           <Field label="Labour Count"><input type="number" value={labourCount} onChange={e => setLabourCount(e.target.value)} className={inputCls} /></Field>

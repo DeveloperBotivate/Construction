@@ -39,7 +39,7 @@ export default function SubcontractorBillDetail() {
       <PageHeader
         title={bill.billNumber}
         subtitle={`${subcontractor?.name ?? ''} · ${workOrder?.woNumber ?? ''}`}
-        breadcrumb={[{ label: 'Subcontractor Bills', to: '/subcontractor-bills' }, { label: bill.billNumber }]}
+        breadcrumb={[{ label: 'Bills & Payments', to: '/bills-payments' }, { label: bill.billNumber }]}
         actions={<StatusBadge status={bill.status} />}
       />
 

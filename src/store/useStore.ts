@@ -29,7 +29,7 @@ function initialData(): AppData {
     documents: seed.DOCUMENTS, subscriptions: seed.SUBSCRIPTIONS, loans: seed.LOANS, loanInstallments: seed.LOAN_INSTALLMENTS,
     dailyReports: seed.DAILY_REPORTS, attendance: seed.ATTENDANCE, equipmentLogs: seed.EQUIPMENT_LOGS, siteIssues: seed.SITE_ISSUES,
     checklistTemplates: seed.CHECKLIST_TEMPLATES, checklistInstances: seed.CHECKLIST_INSTANCES, delegations: seed.DELEGATIONS,
-    auditLog: seed.AUDIT_LOG, notifications: seed.NOTIFICATIONS, comments: [], approvalTasks: [],
+    auditLog: seed.AUDIT_LOG, notifications: seed.NOTIFICATIONS, comments: [], approvalTasks: seed.APPROVAL_TASKS,
     exceptionOverrides: {}, counters: { ...seed.SEED_COUNTERS },
   }
 }
@@ -308,23 +308,28 @@ export const useStore = create<Store>()(
         return dpr
       },
       submitDPR: (id) => {
+        // PE self-verifies at submission (auto-recorded below) then routes straight to PM —
+        // the site only has one PE account, so a blocking "PE reviews PE" stage would deadlock.
         const user = get().currentUser!
         const dpr = get().dailyReports.find(d => d.id === id)!
-        const step: ApprovalStep = { id: genId('ST'), approverRole: 'PE', approverName: user.name, action: 'SUBMITTED', timestamp: nowIso() }
+        const steps: ApprovalStep[] = [
+          { id: genId('ST'), approverRole: 'PE', approverName: user.name, action: 'SUBMITTED', timestamp: nowIso() },
+          { id: genId('ST'), approverRole: 'PE', approverName: user.name, action: 'VERIFIED', comment: 'Self-verified at site before submission', timestamp: nowIso() },
+        ]
         set(s => ({
-          dailyReports: s.dailyReports.map(d => d.id === id ? { ...d, status: 'PE_REVIEW', approvalHistory: [...d.approvalHistory, step] } : d),
-          auditLog: [...s.auditLog, mkAudit('DailyReport', id, dpr.dprNumber, 'Submitted', user, 'DRAFT', 'PE_REVIEW')],
-          approvalTasks: [...s.approvalTasks, raiseApproval('dpr', 'DailyReport', id, dpr.dprNumber, `DPR Review - ${dpr.dprNumber} (${dpr.activity})`, undefined, dpr.projectId, user, 'PE')],
-          notifications: [...s.notifications, mkNotif({ toRole: 'PE', title: 'DPR pending PE review', message: `${dpr.dprNumber} submitted for review.`, module: 'dpr', relatedRecordId: id })],
+          dailyReports: s.dailyReports.map(d => d.id === id ? { ...d, status: 'PM_REVIEW', approvalHistory: [...d.approvalHistory, ...steps] } : d),
+          auditLog: [...s.auditLog, mkAudit('DailyReport', id, dpr.dprNumber, 'Submitted & Self-Verified', user, 'DRAFT', 'PM_REVIEW')],
+          approvalTasks: [...s.approvalTasks, raiseApproval('dpr', 'DailyReport', id, dpr.dprNumber, `DPR Review - ${dpr.dprNumber} (${dpr.activity})`, undefined, dpr.projectId, user, 'PM')],
+          notifications: [...s.notifications, mkNotif({ toRole: 'PM', title: 'DPR pending approval', message: `${dpr.dprNumber} submitted for review.`, module: 'dpr', relatedRecordId: id })],
         }))
       },
       resubmitDPR: (id) => {
         const user = get().currentUser!
         const dpr = get().dailyReports.find(d => d.id === id)!
         set(s => ({
-          dailyReports: s.dailyReports.map(d => d.id === id ? { ...d, status: 'PE_REVIEW' } : d),
-          auditLog: [...s.auditLog, mkAudit('DailyReport', id, dpr.dprNumber, 'Resubmitted', user, 'CORRECTION_REQUIRED', 'PE_REVIEW')],
-          approvalTasks: [...s.approvalTasks, raiseApproval('dpr', 'DailyReport', id, dpr.dprNumber, `DPR Review - ${dpr.dprNumber} (${dpr.activity})`, undefined, dpr.projectId, user, 'PE')],
+          dailyReports: s.dailyReports.map(d => d.id === id ? { ...d, status: 'PM_REVIEW' } : d),
+          auditLog: [...s.auditLog, mkAudit('DailyReport', id, dpr.dprNumber, 'Resubmitted', user, 'CORRECTION_REQUIRED', 'PM_REVIEW')],
+          approvalTasks: [...s.approvalTasks, raiseApproval('dpr', 'DailyReport', id, dpr.dprNumber, `DPR Review - ${dpr.dprNumber} (${dpr.activity})`, undefined, dpr.projectId, user, 'PM')],
         }))
       },
       addAttendance: (data) => {
@@ -677,12 +682,16 @@ export const useStore = create<Store>()(
         const boq = get().boqItems.find(b => b.id === data.boqItemId)
         const prevQty = get().measurements.filter(m => m.boqItemId === data.boqItemId && m.status === 'APPROVED').reduce((max, m) => Math.max(max, m.cumulativeQty), 0)
         const currentQty = data.currentQty ?? 0
-        const meas: Measurement = { id: genId('meas'), measurementNumber: n, projectId: data.projectId!, boqItemId: data.boqItemId!, subcontractorId: data.subcontractorId, workOrderId: data.workOrderId, previousQty: prevQty, currentQty, cumulativeQty: prevQty + currentQty, rate: boq?.rate ?? 0, amount: currentQty * (boq?.rate ?? 0), date: nowIso(), measuredBy: user.id, attachments: data.attachments ?? [], status: 'SUBMITTED' }
+        // If the PE themselves records the measurement, skip the blocking "PE verifies PE" stage
+        // (only one PE account exists per site) and route straight to PM verification.
+        const firstApproverRole = user.role === 'PE' ? 'PM' : 'PE'
+        const initialStatus = user.role === 'PE' ? 'PE_VERIFIED' : 'SUBMITTED'
+        const meas: Measurement = { id: genId('meas'), measurementNumber: n, projectId: data.projectId!, boqItemId: data.boqItemId!, subcontractorId: data.subcontractorId, workOrderId: data.workOrderId, previousQty: prevQty, currentQty, cumulativeQty: prevQty + currentQty, rate: boq?.rate ?? 0, amount: currentQty * (boq?.rate ?? 0), date: nowIso(), measuredBy: user.id, attachments: data.attachments ?? [], status: initialStatus }
         const step: ApprovalStep = { id: genId('ST'), approverRole: 'PE', approverName: user.name, action: 'SUBMITTED', timestamp: nowIso() }
         set(s => ({
           measurements: [...s.measurements, meas],
           auditLog: [...s.auditLog, mkAudit('Measurement', meas.id, meas.measurementNumber, 'Recorded & Submitted', user)],
-          approvalTasks: [...s.approvalTasks, raiseApproval('measurement', 'Measurement', meas.id, meas.measurementNumber, `Measurement Verification - ${meas.measurementNumber}`, meas.amount, meas.projectId, user, 'PE')],
+          approvalTasks: [...s.approvalTasks, raiseApproval('measurement', 'Measurement', meas.id, meas.measurementNumber, `Measurement Verification - ${meas.measurementNumber}`, meas.amount, meas.projectId, user, firstApproverRole)],
         }))
         void step
         return meas

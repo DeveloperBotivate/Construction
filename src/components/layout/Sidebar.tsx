@@ -33,21 +33,32 @@ export function Sidebar({ mobileOpen, onCloseMobile }: { mobileOpen: boolean; on
               <div key={section.title} className="mb-4">
                 <p className="mb-1 px-3 text-[10px] font-semibold uppercase tracking-wider text-ink-400">{section.title}</p>
                 <ul className="space-y-0.5">
-                  {items.map(item => (
-                    <li key={item.key}>
-                      <NavLink
-                        to={item.path}
-                        onClick={onCloseMobile}
-                        className={({ isActive }) => cls(
-                          'flex items-center gap-2.5 rounded-md px-3 py-2 text-sm font-medium transition-colors',
-                          isActive ? 'bg-brand-50 text-brand-700' : 'text-ink-600 hover:bg-ink-100 hover:text-ink-900'
+                  {items.map((item, idx) => {
+                    const showGroup = !!item.group && item.group !== items[idx - 1]?.group
+                    return (
+                      <li key={item.key}>
+                        {showGroup && (
+                          <p className={cls(
+                            'mb-0.5 px-3 text-[10px] font-medium uppercase tracking-wide text-ink-300',
+                            idx > 0 && 'mt-2'
+                          )}>
+                            {item.group}
+                          </p>
                         )}
-                      >
-                        <item.icon className="h-4 w-4 shrink-0" />
-                        <span className="truncate">{item.label}</span>
-                      </NavLink>
-                    </li>
-                  ))}
+                        <NavLink
+                          to={item.path}
+                          onClick={onCloseMobile}
+                          className={({ isActive }) => cls(
+                            'flex items-center gap-2.5 rounded-md px-3 py-2 text-sm font-medium transition-colors',
+                            isActive ? 'bg-brand-50 text-brand-700' : 'text-ink-600 hover:bg-ink-100 hover:text-ink-900'
+                          )}
+                        >
+                          <item.icon className="h-4 w-4 shrink-0" />
+                          <span className="truncate">{item.label}</span>
+                        </NavLink>
+                      </li>
+                    )
+                  })}
                 </ul>
               </div>
             )

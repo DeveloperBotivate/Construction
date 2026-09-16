@@ -61,7 +61,7 @@ export default function BillingDashboard() {
           )}
         </SectionCard>
 
-        <SectionCard title="RA Bills by Status" actions={<button className="text-xs font-medium text-brand-600 hover:underline" onClick={() => navigate('/ra-bills')}>View all</button>}>
+        <SectionCard title="RA Bills by Status" actions={<button className="text-xs font-medium text-brand-600 hover:underline" onClick={() => navigate('/bills-payments')}>View all</button>}>
           {Object.keys(raStatusCounts).length === 0 ? <EmptyState message="No RA bills yet." /> : (
             <ul className="divide-y divide-ink-100">
               {Object.entries(raStatusCounts).map(([status, count]) => (

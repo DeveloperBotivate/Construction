@@ -2,13 +2,13 @@ import {
   LayoutDashboard, Building2, MapPin, ListChecks, FileText, NotebookPen, Users, HardHat,
   Truck, AlertTriangle, PackageSearch, FileSearch, Quote, Scale, BadgeCheck, ShieldCheck, FileSignature,
   ArrowUpFromLine, Warehouse, PackageCheck, Boxes, BookOpen, PackageMinus, PackageX, ArrowLeftRight, ClipboardCheck,
-  Wrench, ClipboardList, HandCoins, ScrollText, Receipt, Banknote, FileBarChart, Coins,
+  Wrench, ClipboardList, HandCoins, ScrollText, Receipt, FileBarChart, Coins,
   FolderKanban, FileCheck2, Share2, CalendarX, RefreshCw, Landmark, Layers, PieChart, CheckSquare, ListTodo,
   CalendarCheck, Inbox, BarChart3, Route, TriangleAlert, Settings,
 } from 'lucide-react'
 import type { ModuleKey } from './permissions'
 
-export interface NavItem { key: ModuleKey; label: string; path: string; icon: typeof LayoutDashboard }
+export interface NavItem { key: ModuleKey; label: string; path: string; icon: typeof LayoutDashboard; group?: string }
 export interface NavSection { title: string; items: NavItem[] }
 
 export const NAV_SECTIONS: NavSection[] = [
@@ -50,27 +50,21 @@ export const NAV_SECTIONS: NavSection[] = [
     { key: 'stockTransfer', label: 'Stock Transfer', path: '/stock-transfer', icon: ArrowLeftRight },
     { key: 'stockAudit', label: 'Stock Audit', path: '/stock-audit', icon: FileBarChart },
   ]},
-  { title: 'Subcontractor', items: [
-    { key: 'subcontractors', label: 'Subcontractors', path: '/subcontractors', icon: HardHat },
-    { key: 'workOrders', label: 'Work Orders', path: '/work-orders', icon: ClipboardList },
-    { key: 'measurements', label: 'Measurements', path: '/measurements', icon: Layers },
-    { key: 'subcontractorBills', label: 'Subcontractor Bills', path: '/subcontractor-bills', icon: Receipt },
+  { title: 'Finance', items: [
+    { key: 'billsPayments', label: 'Bills & Payments', path: '/bills-payments', icon: Receipt, group: 'Bills & Payments' },
+    { key: 'workOrders', label: 'Work Orders', path: '/work-orders', icon: ClipboardList, group: 'Subcontractor' },
+    { key: 'measurements', label: 'Measurements', path: '/measurements', icon: Layers, group: 'Subcontractor' },
+    { key: 'contracts', label: 'Contracts', path: '/contracts', icon: ScrollText, group: 'Billing' },
+    { key: 'receivables', label: 'Receivables', path: '/receivables', icon: HandCoins, group: 'Billing' },
+    { key: 'threeWayMatch', label: '3-Way Matching', path: '/three-way-match', icon: Scale, group: 'Accounts' },
+    { key: 'freight', label: 'Freight', path: '/freight', icon: Truck, group: 'Accounts' },
+    { key: 'debitNotes', label: 'Debit Notes', path: '/debit-notes', icon: FileText, group: 'Accounts' },
+    { key: 'expenses', label: 'Expenses', path: '/expenses', icon: Coins, group: 'Accounts' },
+    { key: 'tally', label: 'Tally', path: '/tally', icon: PieChart, group: 'Accounts' },
   ]},
-  { title: 'Billing', items: [
+  { title: 'Master', items: [
     { key: 'clients', label: 'Clients', path: '/clients', icon: Landmark },
-    { key: 'contracts', label: 'Contracts', path: '/contracts', icon: ScrollText },
-    { key: 'raBills', label: 'RA Bills', path: '/ra-bills', icon: FileCheck2 },
-    { key: 'clientInvoices', label: 'Client Invoices', path: '/client-invoices', icon: Receipt },
-    { key: 'receivables', label: 'Receivables', path: '/receivables', icon: HandCoins },
-  ]},
-  { title: 'Accounts', items: [
-    { key: 'vendorBills', label: 'Vendor Bills', path: '/vendor-bills', icon: Receipt },
-    { key: 'threeWayMatch', label: '3-Way Matching', path: '/three-way-match', icon: Scale },
-    { key: 'freight', label: 'Freight', path: '/freight', icon: Truck },
-    { key: 'debitNotes', label: 'Debit Notes', path: '/debit-notes', icon: FileText },
-    { key: 'payments', label: 'Payments', path: '/payments', icon: Banknote },
-    { key: 'expenses', label: 'Expenses', path: '/expenses', icon: Coins },
-    { key: 'tally', label: 'Tally', path: '/tally', icon: PieChart },
+    { key: 'subcontractors', label: 'Subcontractors', path: '/subcontractors', icon: HardHat },
   ]},
   { title: 'Documents', items: [
     { key: 'documents', label: 'Document Management', path: '/documents', icon: FolderKanban },

@@ -56,10 +56,10 @@ export default function AccountsDashboard() {
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <SectionCard title="Vendor Bills by Status">
-          <StatusCountList counts={vendorBillStatusCounts} onClick={() => navigate('/vendor-bills')} />
+          <StatusCountList counts={vendorBillStatusCounts} onClick={() => navigate('/bills-payments')} />
         </SectionCard>
         <SectionCard title="Subcontractor Bills by Status">
-          <StatusCountList counts={subcontractorBillStatusCounts} onClick={() => navigate('/subcontractor-bills')} />
+          <StatusCountList counts={subcontractorBillStatusCounts} onClick={() => navigate('/bills-payments')} />
         </SectionCard>
 
         <SectionCard title="Invoice Mismatches" actions={<button className="text-xs font-medium text-brand-600 hover:underline" onClick={() => navigate('/three-way-match')}>View queue</button>}>
@@ -74,7 +74,7 @@ export default function AccountsDashboard() {
           )}
         </SectionCard>
 
-        <SectionCard title="Payment Queue (MD Approval)" actions={<button className="text-xs font-medium text-brand-600 hover:underline" onClick={() => navigate('/payments')}>View all</button>}>
+        <SectionCard title="Payment Queue (MD Approval)" actions={<button className="text-xs font-medium text-brand-600 hover:underline" onClick={() => navigate('/bills-payments')}>View all</button>}>
           {paymentQueueTasks.length === 0 ? <EmptyState message="No payments currently awaiting MD approval." /> : (
             <ul className="divide-y divide-ink-100">
               {paymentQueueTasks.map(t => (
@@ -87,7 +87,7 @@ export default function AccountsDashboard() {
           )}
         </SectionCard>
 
-        <SectionCard title="Recent Payments" actions={<button className="text-xs font-medium text-brand-600 hover:underline" onClick={() => navigate('/payments')}>View all</button>}>
+        <SectionCard title="Recent Payments" actions={<button className="text-xs font-medium text-brand-600 hover:underline" onClick={() => navigate('/bills-payments')}>View all</button>}>
           {recentPayments.length === 0 ? <EmptyState message="No payments yet." /> : (
             <ul className="divide-y divide-ink-100">
               {recentPayments.map(p => (

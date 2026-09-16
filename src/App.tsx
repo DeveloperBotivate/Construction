@@ -60,26 +60,23 @@ import WorkOrdersList from './pages/subcontractors/WorkOrdersList'
 import WorkOrderDetail from './pages/subcontractors/WorkOrderDetail'
 import MeasurementsList from './pages/subcontractors/MeasurementsList'
 import MeasurementDetail from './pages/subcontractors/MeasurementDetail'
-import SubcontractorBillsList from './pages/subcontractors/SubcontractorBillsList'
 import SubcontractorBillDetail from './pages/subcontractors/SubcontractorBillDetail'
 
 import ClientsList from './pages/billing/ClientsList'
 import ContractsList from './pages/billing/ContractsList'
-import RABillsList from './pages/billing/RABillsList'
 import RABillDetail from './pages/billing/RABillDetail'
-import ClientInvoices from './pages/billing/ClientInvoices'
 import Receivables from './pages/billing/Receivables'
 
-import VendorBillsList from './pages/accounts/VendorBillsList'
 import VendorBillDetail from './pages/accounts/VendorBillDetail'
 import ThreeWayMatch from './pages/accounts/ThreeWayMatch'
 import FreightList from './pages/accounts/FreightList'
 import DebitNotesList from './pages/accounts/DebitNotesList'
 import DebitNoteDetail from './pages/accounts/DebitNoteDetail'
-import PaymentsList from './pages/accounts/PaymentsList'
 import PaymentDetail from './pages/accounts/PaymentDetail'
 import Expenses from './pages/accounts/Expenses'
 import Tally from './pages/accounts/Tally'
+
+import BillsAndPayments from './pages/finance/BillsAndPayments'
 
 import DocumentsList from './pages/documents/DocumentsList'
 import DocumentApproval from './pages/documents/DocumentApproval'
@@ -165,23 +162,19 @@ export default function App() {
           <Route path="/work-orders/:id" element={<WorkOrderDetail />} />
           <Route path="/measurements" element={<MeasurementsList />} />
           <Route path="/measurements/:id" element={<MeasurementDetail />} />
-          <Route path="/subcontractor-bills" element={<SubcontractorBillsList />} />
           <Route path="/subcontractor-bills/:id" element={<SubcontractorBillDetail />} />
 
           <Route path="/clients" element={<ClientsList />} />
           <Route path="/contracts" element={<ContractsList />} />
-          <Route path="/ra-bills" element={<RABillsList />} />
           <Route path="/ra-bills/:id" element={<RABillDetail />} />
-          <Route path="/client-invoices" element={<ClientInvoices />} />
           <Route path="/receivables" element={<Receivables />} />
 
-          <Route path="/vendor-bills" element={<VendorBillsList />} />
+          <Route path="/bills-payments" element={<BillsAndPayments />} />
           <Route path="/vendor-bills/:id" element={<VendorBillDetail />} />
           <Route path="/three-way-match" element={<ThreeWayMatch />} />
           <Route path="/freight" element={<FreightList />} />
           <Route path="/debit-notes" element={<DebitNotesList />} />
           <Route path="/debit-notes/:id" element={<DebitNoteDetail />} />
-          <Route path="/payments" element={<PaymentsList />} />
           <Route path="/payments/:id" element={<PaymentDetail />} />
           <Route path="/expenses" element={<Expenses />} />
           <Route path="/tally" element={<Tally />} />

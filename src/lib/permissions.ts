@@ -6,9 +6,10 @@ export type ModuleKey =
   | 'dpr' | 'attendance' | 'labour' | 'equipment' | 'siteIssues'
   | 'indents' | 'enquiries' | 'quotations' | 'comparison' | 'techApproval' | 'mgmtApproval' | 'po' | 'lifting' | 'dispatch'
   | 'storeDashboard' | 'expectedDeliveries' | 'grn' | 'inventory' | 'stockLedger' | 'storeIssue' | 'storeReturn' | 'stockTransfer' | 'stockAudit'
-  | 'subcontractors' | 'workOrders' | 'measurements' | 'subcontractorBills'
-  | 'clients' | 'contracts' | 'raBills' | 'clientInvoices' | 'receivables'
-  | 'vendorBills' | 'threeWayMatch' | 'freight' | 'debitNotes' | 'payments' | 'expenses' | 'tally'
+  | 'subcontractors' | 'workOrders' | 'measurements'
+  | 'clients' | 'contracts' | 'receivables'
+  | 'threeWayMatch' | 'freight' | 'debitNotes' | 'expenses' | 'tally'
+  | 'billsPayments'
   | 'documents' | 'documentApproval' | 'documentExpiry'
   | 'subscriptions' | 'loans'
   | 'checklist' | 'checklistTemplates' | 'delegation' | 'myTasks'
@@ -23,9 +24,10 @@ export const ALL_MODULES: ModuleKey[] = [
   'dpr', 'attendance', 'labour', 'equipment', 'siteIssues',
   'indents', 'enquiries', 'quotations', 'comparison', 'techApproval', 'mgmtApproval', 'po', 'lifting', 'dispatch',
   'storeDashboard', 'expectedDeliveries', 'grn', 'inventory', 'stockLedger', 'storeIssue', 'storeReturn', 'stockTransfer', 'stockAudit',
-  'subcontractors', 'workOrders', 'measurements', 'subcontractorBills',
-  'clients', 'contracts', 'raBills', 'clientInvoices', 'receivables',
-  'vendorBills', 'threeWayMatch', 'freight', 'debitNotes', 'payments', 'expenses', 'tally',
+  'subcontractors', 'workOrders', 'measurements',
+  'clients', 'contracts', 'receivables',
+  'threeWayMatch', 'freight', 'debitNotes', 'expenses', 'tally',
+  'billsPayments',
   'documents', 'documentApproval', 'documentExpiry',
   'subscriptions', 'loans',
   'checklist', 'checklistTemplates', 'delegation', 'myTasks',
@@ -39,17 +41,17 @@ export const ROLE_MODULES: Record<Role, ModuleKey[]> = {
     'dashboard', 'projects', 'sites', 'boq', 'drawings', 'planning',
     'dpr', 'attendance', 'labour', 'equipment', 'siteIssues',
     'indents', 'mgmtApproval', 'po',
-    'subcontractors', 'workOrders', 'measurements', 'subcontractorBills',
+    'subcontractors', 'workOrders', 'measurements', 'billsPayments',
     'checklist', 'checklistTemplates', 'delegation', 'myTasks',
     'approvals', 'reports', 'traceability', 'exceptions', 'documents',
   ],
   ACCOUNTS: [
-    'dashboard', 'vendorBills', 'threeWayMatch', 'freight', 'debitNotes', 'payments', 'expenses', 'tally',
-    'subcontractorBills', 'receivables', 'loans', 'subscriptions',
+    'dashboard', 'billsPayments', 'threeWayMatch', 'freight', 'debitNotes', 'expenses', 'tally',
+    'receivables', 'loans', 'subscriptions',
     'approvals', 'reports', 'traceability', 'exceptions', 'documents', 'myTasks',
   ],
   BILLING: [
-    'dashboard', 'clients', 'contracts', 'boq', 'measurements', 'raBills', 'clientInvoices', 'receivables',
+    'dashboard', 'clients', 'contracts', 'boq', 'measurements', 'billsPayments', 'receivables',
     'documents', 'reports', 'traceability', 'myTasks', 'approvals',
   ],
   PROCUREMENT: [
@@ -68,7 +70,7 @@ export const ROLE_MODULES: Record<Role, ModuleKey[]> = {
     'attendance', 'checklist', 'myTasks', 'traceability', 'documents',
   ],
   VENDOR: ['dashboard', 'enquiries', 'quotations', 'po', 'dispatch', 'documents', 'myTasks'],
-  SUBCONTRACTOR: ['dashboard', 'workOrders', 'measurements', 'subcontractorBills', 'documents', 'myTasks'],
+  SUBCONTRACTOR: ['dashboard', 'workOrders', 'measurements', 'billsPayments', 'documents', 'myTasks'],
 }
 
 export type Action = 'view' | 'create' | 'edit' | 'submit' | 'approve' | 'reject' | 'sendBack' | 'issue' | 'receive' | 'delete'

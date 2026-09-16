@@ -6,7 +6,7 @@ import { fmtCurrency } from '../../lib/utils'
 
 interface Hit { type: string; id: string; title: string; sub: string; path: string }
 
-export function GlobalSearch() {
+export function GlobalSearch({ autoFocus }: { autoFocus?: boolean } = {}) {
   const navigate = useNavigate()
   const [query, setQuery] = useState('')
   const [open, setOpen] = useState(false)
@@ -38,6 +38,7 @@ export function GlobalSearch() {
     <div className="relative w-full max-w-sm" ref={boxRef}>
       <Search className="pointer-events-none absolute left-3 top-2.5 h-4 w-4 text-ink-400" />
       <input
+        autoFocus={autoFocus}
         value={query}
         onChange={e => { setQuery(e.target.value); setOpen(true) }}
         onFocus={() => setOpen(true)}
@@ -46,7 +47,7 @@ export function GlobalSearch() {
         className="w-full rounded-md border border-ink-300 bg-ink-50 py-2 pl-9 pr-3 text-sm placeholder:text-ink-400 focus:border-brand-500 focus:bg-white focus:outline-none focus:ring-1 focus:ring-brand-500"
       />
       {open && query.trim() && (
-        <div className="absolute left-0 top-full z-50 mt-1.5 w-[28rem] rounded-lg border border-ink-200 bg-white p-1.5 shadow-lg">
+        <div className="absolute left-0 top-full z-50 mt-1.5 w-[min(28rem,90vw)] rounded-lg border border-ink-200 bg-white p-1.5 shadow-lg">
           {hits.length === 0 ? (
             <p className="px-3 py-4 text-center text-sm text-ink-400">No results for "{query}"</p>
           ) : (
